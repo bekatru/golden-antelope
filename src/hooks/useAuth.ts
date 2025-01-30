@@ -10,7 +10,7 @@ type User = {
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setIsLoading] = useState(true);
   const authProvider = new GoogleAuthProvider();
 
   useEffect(() => {
@@ -47,5 +47,5 @@ export const useAuth = () => {
     }
   };
 
-  return { user, isLoading, login, logout };
+  return { user, loading, login, logout };
 };

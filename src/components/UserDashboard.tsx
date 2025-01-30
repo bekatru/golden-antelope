@@ -49,8 +49,8 @@ const UserDashboard = () => {
   return (
     <ol>
       {transactions.map((transaction) => <li key={transaction.id}>
-        <text>-{transaction.amount} from {JSON.stringify(transaction.account, null, 2)}</text>
-        {transaction.note && <text>{transaction.note}</text>}
+        <span>-{transaction.amount} from {JSON.stringify(transaction.account, null, 2)}</span>
+        {transaction.note && <span>{transaction.note}</span>}
       </li>)}
     </ol>
   )

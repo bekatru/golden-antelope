@@ -1,15 +1,26 @@
 import { useAuth } from "./hooks/useAuth";
-import SignIn from "./components/SignIn";
-import UserDashboard from "./components/UserDashboard";
-import { Loader } from "./components/Loader";
+import { BrowserRouter, Route, Routes } from "react-router";
+import { SettingsScreen, SignInScreen } from "./screens";
+import { BottomTabsLayout } from "./components/BottomTabs/BottomTabsLayout";
 
 const App = () => {
-  const { user, isLoading } = useAuth();
+  const { user } = useAuth();
 
   return (
-    <>
-      {isLoading ? <Loader/> : user ? <UserDashboard /> : <SignIn />}
-    </>
+    <BrowserRouter>
+      {!user ? (
+        <SignInScreen />
+      ) : (
+        <Routes>
+          <Route path="/" element={<BottomTabsLayout />}>
+            <Route index path="add" element={<div>add</div>} />
+            <Route path="transactions" element={<div>transactions</div>} />
+            <Route path="accounts" element={<div>accounts</div>} />
+            <Route path="settings" element={<SettingsScreen/>} />
+          </Route>
+        </Routes>
+      )}
+    </BrowserRouter>
   );
 };
 
