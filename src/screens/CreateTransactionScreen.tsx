@@ -36,6 +36,7 @@ export const CreateTransactionScreen = () => {
         Amount:
         <input
           type="number"
+          inputMode="decimal"
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value) || "")}
           className="w-full p-2 border rounded"
