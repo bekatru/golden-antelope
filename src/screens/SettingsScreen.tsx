@@ -5,7 +5,7 @@ export const SettingsScreen = () => {
   const auth = useAuth();
   return (
     <div id="settings-screen">
-      <div id="settings-screen-header">
+      <div id="settings-screen-header" className="flex justify-between items-center">
         <p>{auth.user?.name ?? "Log in to use full potential"}</p>
         <DynamicIcon
           name={auth.user ? "log-out" : "log-in"}

@@ -1,11 +1,11 @@
 import { Outlet } from "react-router";
-import { BottomTabs } from "./BottomTabs";
+import { BaseLayoutTabs } from "./BaseLayoutTabs";
 
-export const BottomTabsLayout = () => {
+export const BaseLayout = () => {
   return (
     <div id="bottom-tabs-layout" className="h-full pb-[60px]">
       <Outlet/>
-      <BottomTabs/>
+      <BaseLayoutTabs/>
     </div>
   );
 };
