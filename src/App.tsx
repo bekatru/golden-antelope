@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import { SettingsScreen } from "./screens";
+import { SettingsScreen, TransactionsScreen } from "./screens";
 import { BottomTabsLayout } from "./components/BottomTabs/BottomTabsLayout";
 
 const App = () => {
@@ -7,8 +7,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<BottomTabsLayout />}>
-          <Route index path="add" element={<div>add</div>} />
-          <Route path="transactions" element={<div>transactions</div>} />
+          <Route index path="transactions" element={<TransactionsScreen/>} />
           <Route path="accounts" element={<div>accounts</div>} />
           <Route path="settings" element={<SettingsScreen />} />
         </Route>

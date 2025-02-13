@@ -1,17 +1,9 @@
-import { Plus, List, WalletMinimal, Settings2 } from "lucide-react";
+import { List, WalletMinimal, Settings2 } from "lucide-react";
 import { NavLink } from "react-router";
 
 export const BottomTabs = () => {
   return (
     <div id="bottom-tabs">
-      <NavLink
-        to="add"
-        className={({ isActive }) =>
-          ["bottom-tab", isActive && "active"].join(" ")
-        }
-      >
-        <Plus size={28} strokeWidth={1} />
-      </NavLink>
       <NavLink
         to="transactions"
         className={({ isActive }) =>
