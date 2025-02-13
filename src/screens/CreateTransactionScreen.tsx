@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Category, TransactionDto, useStore } from "../services/zustand";
-import { Cross, Save, X} from "lucide-react";
+import { Save, X} from "lucide-react";
 import { useNavigate } from "react-router";
 
 export const CreateTransactionScreen = () => {
