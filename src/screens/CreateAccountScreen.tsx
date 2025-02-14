@@ -45,7 +45,7 @@ export const CreateAccountScreen = () => {
           placeholder="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
+          className="mt-auto w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
           required
         />
 
@@ -62,7 +62,7 @@ export const CreateAccountScreen = () => {
         </select>
 
       
-      <div className="w-full mt-auto border-t border-gray-500 flex justify-evenly">
+      <div className="w-full border-t border-gray-500 flex justify-evenly">
         <X onClick={() => navigate(-1)} size={28} strokeWidth={1} className="flex-1 py-4 box-content"/>
         <button type="submit" className="flex-1 py-4 box-content flex justify-center">
           <Save size={28} strokeWidth={1} />
