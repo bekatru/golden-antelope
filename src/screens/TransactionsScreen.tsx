@@ -9,7 +9,7 @@ export const TransactionsScreen = () => {
     <div id="transactions-screen-container" className="h-full flex flex-col justify-end">
         <div className="max-h-full overflow-scroll">
 
-            {transactions.slice().reverse().map(({ id, createdAt, amount, type }) => (
+            {transactions.slice().reverse().map(({ id, createdAt, amount, type, fromAccount, toAccount}) => (
                 
                 <div key={id} className="flex flex-row justify-between py-4 mx-4 text-xl font-extralight">
                     <div className="text-gray-500">{new Date(createdAt).toLocaleDateString()}</div>
@@ -28,6 +28,8 @@ export const TransactionsScreen = () => {
                                     : "="
                         }
                         {amount}
+                        {" "}
+                        {fromAccount?.currency ?? toAccount?.currency}
                     </div>
                 </div>
             

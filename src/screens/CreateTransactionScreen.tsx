@@ -69,7 +69,7 @@ export const CreateTransactionScreen = () => {
           className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
           required
         >
-          <option key={'select-account'} value={""} disabled>select account</option>
+          <option key={'select-account'} value={""} disabled>from account</option>
           {
             accounts.map(({id, name}) => (
               <option key={id} value={id} disabled={id === toAccountId}>from {name}</option>
@@ -83,7 +83,7 @@ export const CreateTransactionScreen = () => {
           className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
           required
         >
-          <option key={'select-account'} value={""} disabled>select account</option>
+          <option key={'select-account'} value={""} disabled>to account</option>
           {
             accounts.map(({id, name}) => (
               <option key={id} value={id} disabled={id === fromAccountId}>to {name}</option>
@@ -98,9 +98,6 @@ export const CreateTransactionScreen = () => {
           className="w-full p-2 focus:outline-0 text-2xl text-right"
         />
 
-
-
-      
       <div className="w-full mt-auto border-t border-gray-500 flex justify-evenly">
         <X onClick={() => navigate(-1)} size={28} strokeWidth={1} className="flex-1 py-4 box-content"/>
         <button type="submit" className="flex-1 py-4 box-content flex justify-center">
