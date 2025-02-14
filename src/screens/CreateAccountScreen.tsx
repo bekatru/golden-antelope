@@ -31,7 +31,7 @@ export const CreateAccountScreen = () => {
     createAccount(newAccount);
 
     // Reset form
-    setName(undefined);
+    setName("");
     setCurrency("");
   };
 
