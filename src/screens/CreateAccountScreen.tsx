@@ -8,7 +8,7 @@ export const CreateAccountScreen = () => {
   const {createAccount} = useStore();
 
   const [name, setName] = useState<string>();
-  const [currency, setCurrency] = useState<string>();
+  const [currency, setCurrency] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ export const CreateAccountScreen = () => {
 
     // Reset form
     setName(undefined);
-    setCurrency(undefined);
+    setCurrency("");
   };
 
 
@@ -44,11 +44,20 @@ export const CreateAccountScreen = () => {
           placeholder="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 text-right focus:outline-0 text-2xl"
+          className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
           required
         />
 
-        
+        <select
+          value={currency}
+          onChange={(e) => setCurrency(e.target.value)}
+          className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
+          required
+        >
+          <option value="" disabled>select currency</option>
+          <option value="usd">USD</option>
+          <option value="kgs">KGS</option>
+        </select>
 
       
       <div className="w-full mt-auto border-t border-gray-500 flex justify-evenly">
