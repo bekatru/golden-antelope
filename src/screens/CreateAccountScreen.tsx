@@ -58,6 +58,7 @@ export const CreateAccountScreen = () => {
           <option value="" disabled>select currency</option>
           <option value="usd">USD</option>
           <option value="kgs">KGS</option>
+          <option value="eur">EUR</option>
         </select>
 
       
