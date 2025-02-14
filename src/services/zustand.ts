@@ -34,16 +34,51 @@ class Transaction implements ITransaction {
     }
 }
 
+interface IAccount {
+  id: string;
+  name: string;
+  balance: number;
+  currency: string;
+}
+
+type AccountDto = Omit<IAccount, "id">;
+
+class Entity {
+  id: string;
+
+  constructor() {
+    this.id = uuidv4();
+  }
+}
+
+class Account extends Entity implements IAccount {
+  name: string;
+  balance: number;
+  currency: string;
+
+  constructor(dto: AccountDto) {
+    super();
+    this.name = dto.name;
+    this.balance = 0;
+    this.currency = dto.currency;
+  }
+
+}
+
 type Store = {
   transactions: Transaction[]
+  accounts: Account[];
   createTransaction: (data: TransactionDto) => void
+  createAccount: (data: AccountDto) => void
 }
 
 export const useStore = create<Store>()(
   persist(
   (set) => ({
     transactions: [],
+    accounts: [],
     createTransaction: (data: TransactionDto) => set((state) => ({ transactions: [...state.transactions, new Transaction(data)] })),
+    createAccount: (data: AccountDto) => set((state) => ({accounts: [...state.accounts, new Account(data)]}))
   }),
   {
     name: 'golden-antelope-storage'
