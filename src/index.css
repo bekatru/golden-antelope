@@ -59,3 +59,9 @@ body {
   height: 50px;
   width: 50px;
 }
+
+select {
+  direction: rtl;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}

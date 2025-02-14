@@ -41,6 +41,7 @@ export const CreateAccountScreen = () => {
         <input
           autoFocus
           autoComplete="off"
+          autoCorrect="none"
           placeholder="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -62,7 +63,7 @@ export const CreateAccountScreen = () => {
       
       <div className="w-full mt-auto border-t border-gray-500 flex justify-evenly">
         <X onClick={() => navigate(-1)} size={28} strokeWidth={1} className="flex-1 py-4 box-content"/>
-        <button type="submit" className="flex-1 py-4 box-content place-items-center">
+        <button type="submit" className="flex-1 py-4 box-content flex justify-center">
           <Save size={28} strokeWidth={1} />
         </button>
       </div>
