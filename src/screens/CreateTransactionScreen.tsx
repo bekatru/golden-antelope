@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Category, TransactionDto, useStore } from "../services/zustand";
+import { TransactionDto, useStore } from "../services/zustand";
 import { Save, X} from "lucide-react";
 import { useNavigate } from "react-router";
 
@@ -9,7 +9,6 @@ export const CreateTransactionScreen = () => {
 
   const [amount, setAmount] = useState<number | "">("");
   const [note, setNote] = useState<string>("");
-  const [category, setCategory] = useState<Category | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +21,6 @@ export const CreateTransactionScreen = () => {
     const newTransaction: TransactionDto = {
       amount: Number(amount),
       note: note || null,
-      category,
     };
 
     createTransaction(newTransaction);
@@ -30,7 +28,6 @@ export const CreateTransactionScreen = () => {
     // Reset form
     setAmount("");
     setNote("");
-    setCategory(null);
   };
 
   const formRef = useRef<HTMLFormElement>(null);
