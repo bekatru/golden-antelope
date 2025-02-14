@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TransactionDto, useStore } from "../services/zustand";
+import { TransactionDto, TransactionType, useStore } from "../services/zustand";
 import { Save, X} from "lucide-react";
 import { useNavigate } from "react-router";
 
@@ -9,7 +9,9 @@ export const CreateTransactionScreen = () => {
 
   const [amount, setAmount] = useState<number | "">("");
   const [note, setNote] = useState<string>("");
-  const [account, setAccount] = useState<string>("");
+  const [fromAccountId, setFromAccountId] = useState<string>("");
+  const [toAccountId, setToAccountId] = useState<string>("");
+  const [type, setType] = useState<TransactionType>("expense");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,19 +24,33 @@ export const CreateTransactionScreen = () => {
     const newTransaction: TransactionDto = {
       amount: Number(amount),
       note: note || null,
+      type,
+      fromAccount: accounts.find(({id}) => id == fromAccountId) || null,
+      toAccount: accounts.find(({id}) => id == toAccountId) || null,
     };
 
     createTransaction(newTransaction);
-
+    
     // Reset form
     setAmount("");
     setNote("");
-    setAccount("")
+    setFromAccountId("")
   };
 
 
   return (
     <form onSubmit={handleSubmit} className="px-4 h-full flex flex-col font-light">
+        <select
+          value={type}
+          onChange={(e) => setType(e.target.value as TransactionType)}
+          className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
+          required
+        >
+          <option value={"expense" as TransactionType}>expense</option>
+          <option value={"income" as TransactionType}>income</option>
+          <option value={"transfer" as TransactionType}>transfer</option>
+        </select>
+        
         <input
           autoFocus
           type="number"
@@ -47,19 +63,33 @@ export const CreateTransactionScreen = () => {
           required
         />
 
-        <select
-          value={account}
-          onChange={(e) => setAccount(e.target.value)}
+        {type != 'income' && <select
+          value={fromAccountId}
+          onChange={(e) => setFromAccountId(e.target.value)}
           className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
           required
         >
-          <option key={'select-account'} value="" disabled>select account</option>
+          <option key={'select-account'} value={""} disabled>select account</option>
           {
             accounts.map(({id, name}) => (
-              <option key={id} value={id}>{name}</option>
+              <option key={id} value={id} disabled={id === toAccountId}>from {name}</option>
             ))
           }
-        </select>
+        </select>}
+
+        {type != 'expense' && <select
+          value={toAccountId}
+          onChange={(e) => setToAccountId(e.target.value)}
+          className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
+          required
+        >
+          <option key={'select-account'} value={""} disabled>select account</option>
+          {
+            accounts.map(({id, name}) => (
+              <option key={id} value={id} disabled={id === fromAccountId}>to {name}</option>
+            ))
+          }
+        </select>}
 
         <textarea
           placeholder="note"
