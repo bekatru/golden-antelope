@@ -47,7 +47,7 @@ interface IAccount extends IEntity {
   currency: string;
 }
 
-type AccountDto = Omit<IAccount, "id">;
+export type AccountDto = Omit<IAccount, "id" | "balance">;
 
 class Account extends Entity implements IAccount {
   name: string;
