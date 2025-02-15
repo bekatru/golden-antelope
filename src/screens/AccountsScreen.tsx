@@ -9,7 +9,7 @@ export const AccountsScreen = () => {
     <div id="transactions-screen-container" className="h-full flex flex-col justify-end">
         <div className="max-h-full overflow-scroll">
 
-            {accounts.map(({ id, name, balance }) => (
+            {Object.values(accounts).map(({ id, name, balance }) => (
                 
                 <div key={id} className="flex flex-row justify-between py-4 mx-4 text-xl font-extralight">
                     <div className={"text-gray-700"}>{name}</div>

@@ -74,8 +74,8 @@ class Account extends Entity implements IAccount {
 }
 
 type Store = {
-  transactions: Transaction[];
-  accounts: Account[];
+  transactions: Record<string, Transaction>;
+  accounts: Record<string, Account>;
   createTransaction: (data: TransactionDto) => void;
   createAccount: (data: AccountDto) => void;
 };
@@ -83,57 +83,43 @@ type Store = {
 export const useStore = create<Store>()(
   persist(
     (set) => ({
-      transactions: [],
-      accounts: [],
+      transactions: {},
+      accounts: {},
       createTransaction: (data: TransactionDto) =>
         set((state) => {
           const transaction = new Transaction(data);
 
-          const accountsCopy = state.accounts.slice();
+          const accounts = Object.assign({}, state.accounts);
+          const transactions = Object.assign({}, state.transactions);
+
+          transactions[transaction.id] = transaction;
 
           if (["income", "transfer"].includes(transaction.type)) {
-            const toAccountIndex = accountsCopy.findIndex(({ id }) => {
-              if (!transaction.toAccount) {
-                throw new Error(
-                  "Transaction with 'income' type should have 'toAccount' property"
-                );
-              }
-              return id === transaction.toAccount.id;
-            });
-
-            if (toAccountIndex === -1) {
+            const toAccountId = transaction.toAccount?.id;
+            if (!toAccountId) {
               throw new Error("Account not found");
             }
-
-            accountsCopy[toAccountIndex].balance += transaction.amount;
+            accounts[toAccountId].balance += transaction.amount;
           }
 
           if (["expense", "transfer"].includes(transaction.type)) {
-            const fromAccountIndex = accountsCopy.findIndex(({ id }) => {
-              if (!transaction.fromAccount) {
-                throw new Error(
-                  "Transaction with 'income' type should have 'toAccount' property"
-                );
-              }
-              return id === transaction.fromAccount.id;
-            });
-
-            if (fromAccountIndex === -1) {
+            const fromAccountId = transaction.fromAccount?.id;
+            if (!fromAccountId) {
               throw new Error("Account not found");
             }
-
-            accountsCopy[fromAccountIndex].balance -= transaction.amount;
+            accounts[fromAccountId].balance -= transaction.amount;
           }
 
-          return {
-            transactions: [...state.transactions, new Transaction(data)],
-            accounts: accountsCopy,
-          };
+          return { transactions, accounts };
         }),
       createAccount: (data: AccountDto) =>
-        set((state) => ({
-          accounts: [...state.accounts, new Account(data)],
-        })),
+        set((state) => {
+          const accounts = Object.assign({}, state.accounts);
+          const newAccount = new Account(data);
+          accounts[newAccount.id] = newAccount;
+          return { accounts };
+        }
+        ),
     }),
     {
       name: "golden-antelope-storage",
