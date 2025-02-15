@@ -2,40 +2,15 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Transaction } from "../modules/transaction";
 import { Account } from "../modules/account";
-
-export interface IEntity {
-  id: string;
-}
-
-export type TransactionType = "income" | "expense" | "transfer";
-
-export interface ITransaction extends IEntity {
-  amount: number;
-  createdAt: string;
-  type: TransactionType;
-  note: string | null;
-  save: (transactions: TransactionsMap) => TransactionsMap;
-  execute: (accounts: AccountsMap) => AccountsMap;
-}
-
-export interface IAccount extends IEntity {
-  name: string;
-  balance: number;
-  currency: string;
-  save: (accounts: AccountsMap) => AccountsMap;
-}
-
-export type TransactionDto = Omit<ITransaction, "id" | "createdAt">;
-export type AccountDto = Omit<IAccount, "id" | "balance">;
-
-export type TransactionsMap = Record<string, ITransaction>;
-export type AccountsMap = Record<string, IAccount>;
+import { Category } from "../modules/category";
 
 type Store = {
   transactions: TransactionsMap;
   accounts: AccountsMap;
+  categories: CategoriesMap;
   createTransaction: (data: TransactionDto) => void;
   createAccount: (data: AccountDto) => void;
+  createCategory: (data: CategoryDto) => void;
 };
 
 export const useStore = create<Store>()(
@@ -43,6 +18,7 @@ export const useStore = create<Store>()(
     (set) => ({
       transactions: {},
       accounts: {},
+      categories: {},
       createTransaction: (data: TransactionDto) =>
         set((state) => {
           const transaction = new Transaction(data);
@@ -55,8 +31,13 @@ export const useStore = create<Store>()(
           const account = new Account(data);
           const accounts = account.save(state.accounts);
           return { accounts };
-        }
-        ),
+        }),
+      createCategory: (data: CategoryDto) =>
+        set((state) => {
+          const category = new Category(data);
+          const categories = category.save(state.categories);
+          return { categories };
+        }),
     }),
     {
       name: "golden-antelope-storage",

@@ -1,4 +1,3 @@
-import { AccountDto, AccountsMap, IAccount } from "../services/zustand";
 import { Entity } from "./entity";
 
 export class Account extends Entity implements IAccount {

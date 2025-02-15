@@ -1,11 +1,11 @@
-import { AccountsMap, IAccount, ITransaction, TransactionDto, TransactionType, TransactionsMap } from "../services/zustand";
 import { Entity } from "./entity";
 
 export class Transaction extends Entity implements ITransaction {
     amount: number;
     createdAt: string;
-    note: string | null;
     type: TransactionType;
+    category: ICategory | null;
+    note: string | null;
     fromAccount: IAccount | null;
     toAccount: IAccount | null;
   
@@ -15,6 +15,7 @@ export class Transaction extends Entity implements ITransaction {
       this.amount = dto.amount;
       this.note = dto.note;
       this.type = dto.type;
+      this.category = dto.category;
       this.fromAccount = dto.fromAccount;
       this.toAccount = dto.toAccount;
     }
