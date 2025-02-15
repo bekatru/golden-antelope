@@ -3,12 +3,12 @@ import { useStore } from "../services/zustand";
 import { Save, X} from "lucide-react";
 import { useNavigate } from "react-router";
 
-export const CreateAccountScreen = () => {
+export const CreateCategoryScreen = () => {
   const navigate = useNavigate();
-  const {createAccount} = useStore();
+  const {createCategory, categories} = useStore();
 
   const [name, setName] = useState<string>("");
-  const [currency, setCurrency] = useState<string>("");
+  const [parendCategoryId, setParentCategoryId] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,21 +18,16 @@ export const CreateAccountScreen = () => {
       return;
     }
 
-    if (!currency) {
-        alert("Please select currency");
-        return;
-    }
-
-    const newAccount: AccountDto = {
+    const newCategory: CategoryDto = {
       name,
-      currency,
+      parent: categories[parendCategoryId],
     };
 
-    createAccount(newAccount);
+    createCategory(newCategory);
 
     // Reset form
     setName("");
-    setCurrency("");
+    setParentCategoryId("");
   };
 
 
@@ -50,15 +45,16 @@ export const CreateAccountScreen = () => {
         />
 
         <select
-          value={currency}
-          onChange={(e) => setCurrency(e.target.value)}
+          value={parendCategoryId}
+          onChange={(e) => setParentCategoryId(e.target.value)}
           className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
-          required
         >
-          <option value="" disabled>select currency</option>
-          <option value="usd">USD</option>
-          <option value="kgs">KGS</option>
-          <option value="eur">EUR</option>
+          <option value="" disabled>select parent</option>
+          {Object.values(categories).map(({name, id}) => (
+
+            <option key={id} value={id}>{name}</option>
+          
+          ))}
         </select>
 
       

@@ -2,7 +2,7 @@ interface IEntity {
   id: string;
 }
 
-interface ICategory extends Entity {
+interface ICategory extends IEntity {
   name: string;
   parent: ICategory | null;
 }
@@ -29,8 +29,8 @@ interface IAccount extends IEntity {
 }
 
 type TransactionDto = Omit<ITransaction, "id" | "createdAt">;
-type AccountDto = Omit<IAccount, "id" | "balance">;
-type CategoryDto = ICategory;
+type AccountDto = Omit<IAccount, "id" | "balance" | "save">;
+type CategoryDto = Omit<ICategory, "id">;
 
 type TransactionsMap = Record<string, ITransaction>;
 type AccountsMap = Record<string, IAccount>;

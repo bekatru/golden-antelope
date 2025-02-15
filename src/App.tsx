@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import {  AccountsScreen, CreateAccountScreen, CreateTransactionScreen, SettingsScreen, TransactionsScreen } from "./screens";
+import {  AccountsScreen, CreateAccountScreen, CreateCategoryScreen, CreateTransactionScreen, SettingsScreen, TransactionsScreen } from "./screens";
 import { BottomTabsLayout } from "./components/BottomTabs/BottomTabsLayout";
 import { BaseLayout } from "./components/BaseLayout/BaseLayout";
 
@@ -17,6 +17,7 @@ const App = () => {
         <Route path="/create" element={<BaseLayout/>}>
           <Route path="transaction" element={<CreateTransactionScreen/>}/>
           <Route path="account" element={<CreateAccountScreen/>}/>
+          <Route path="category" element={<CreateCategoryScreen/>} />
         </Route>
       </Routes>
     </BrowserRouter>
