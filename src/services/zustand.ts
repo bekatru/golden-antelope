@@ -6,6 +6,8 @@ import { Category } from "../modules/category";
 
 type Store = {
   timestamp: number;
+  hydrate: (store: Store) => void;
+
   transactions: TransactionsMap;
   accounts: AccountsMap;
   categories: CategoriesMap;
@@ -18,6 +20,8 @@ export const useStore = create<Store>()(
   persist(
     (set) => ({
       timestamp: 0,
+      hydrate: (store: Store) => set(() => store),
+
       transactions: {},
       accounts: {},
       categories: {},

@@ -12,12 +12,12 @@ const dbRef = ref(getDatabase());
 
 
 const App = () => {
-  const {timestamp, accounts, transactions, categories} = useStore();
+  const {timestamp, accounts, transactions, categories, hydrate} = useStore();
   const auth = useAuth();
 
   useEffect(() => {
     if (!auth.user?.uid) return;
-    
+
     const userDataRef = child(dbRef, `users/${auth.user.uid}`);
 
     const persistData = () => set(userDataRef, {
@@ -29,8 +29,13 @@ const App = () => {
 
     get(userDataRef)
       .then((snapshot) => {
+        
         if (!snapshot.exists() || snapshot.val().timestamp < timestamp) {
           persistData();
+        }
+
+        if (snapshot.exists() && snapshot.val().timestamp > timestamp) {
+          hydrate(snapshot.val());
         }
       })
       .catch(console.error);
