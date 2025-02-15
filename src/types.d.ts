@@ -28,7 +28,7 @@ interface IAccount extends IEntity {
   save: (accounts: AccountsMap) => AccountsMap;
 }
 
-type TransactionDto = Omit<ITransaction, "id" | "createdAt">;
+type TransactionDto = Omit<ITransaction, "id" | "createdAt" | "save" | "execute">;
 type AccountDto = Omit<IAccount, "id" | "balance" | "save">;
 type CategoryDto = Omit<ICategory, "id">;
 
