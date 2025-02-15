@@ -5,6 +5,7 @@ import { Account } from "../modules/account";
 import { Category } from "../modules/category";
 
 type Store = {
+  timestamp: number;
   transactions: TransactionsMap;
   accounts: AccountsMap;
   categories: CategoriesMap;
@@ -16,6 +17,7 @@ type Store = {
 export const useStore = create<Store>()(
   persist(
     (set) => ({
+      timestamp: 0,
       transactions: {},
       accounts: {},
       categories: {},
@@ -24,13 +26,20 @@ export const useStore = create<Store>()(
           const transaction = new Transaction(data);
           const accounts = transaction.execute(state.accounts);
           const transactions = transaction.save(state.transactions);
-          return { transactions, accounts };
+          return { 
+            transactions,
+            accounts,
+            timestamp: Date.now(),
+          };
         }),
       createAccount: (data: AccountDto) =>
         set((state) => {
           const account = new Account(data);
           const accounts = account.save(state.accounts);
-          return { accounts };
+          return { 
+            accounts,
+            timestamp: Date.now(),
+          };
         }),
       createCategory: (data: CategoryDto) =>
         set((state) => {

@@ -36,7 +36,7 @@ export const SettingsScreen = () => {
         onClick={auth.user ? handleLogoutPress : auth.login}
       >
         <div className="font-extralight text-xl">
-          {auth.user?.name ?? "log in"}
+          {auth.user?.email ?? "log in"}
         </div>
         <DynamicIcon
           name={auth.user ? "log-out" : "log-in"}

@@ -1,6 +1,7 @@
 {
     "apiKey": "AIzaSyADN1A6Ga1Mg7hIsOKw8zlltg3RogsGCfM",
     "authDomain": "golden-antelope.firebaseapp.com",
+    "databaseURL": "https://golden-antelope-default-rtdb.europe-west1.firebasedatabase.app",
     "projectId": "golden-antelope",
     "storageBucket": "golden-antelope.firebasestorage.app",
     "messagingSenderId": "112461229360",

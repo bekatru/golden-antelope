@@ -25,12 +25,12 @@ export const CreateTransactionScreen = () => {
 
     const newTransaction: TransactionDto = {
       amount: Number(amount),
-      note: note || null,
       type,
+      note: note || null,
       conversionRate: conversionRate || null,
-      fromAccount: accounts[fromAccountId],
-      toAccount: accounts[toAccountId],
-      category: categories[categoryId],
+      fromAccount: accounts[fromAccountId] || null,
+      toAccount: accounts[toAccountId] || null,
+      category: categories[categoryId] || null,
     };
 
     createTransaction(newTransaction);

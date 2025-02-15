@@ -2,8 +2,41 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import {  AccountsScreen, CreateAccountScreen, CreateCategoryScreen, CreateTransactionScreen, SettingsScreen, TransactionsScreen } from "./screens";
 import { BottomTabsLayout } from "./components/BottomTabs/BottomTabsLayout";
 import { BaseLayout } from "./components/BaseLayout/BaseLayout";
+import { useEffect } from "react";
+
+import { useStore } from "./services/zustand";
+import { getDatabase, ref, child, get, set } from "firebase/database";
+import { useAuth } from "./hooks/useAuth";
+
+const dbRef = ref(getDatabase());
+
 
 const App = () => {
+  const {timestamp, accounts, transactions, categories} = useStore();
+  const auth = useAuth();
+
+  useEffect(() => {
+    if (!auth.user?.uid) return;
+    
+    const userDataRef = child(dbRef, `users/${auth.user.uid}`);
+
+    const persistData = () => set(userDataRef, {
+      timestamp,
+      accounts,
+      transactions,
+      categories,
+    })
+
+    get(userDataRef)
+      .then((snapshot) => {
+        if (!snapshot.exists() || snapshot.val().timestamp < timestamp) {
+          persistData();
+        }
+      })
+      .catch(console.error);
+
+  }, [timestamp, auth.user])
+
   return (
     <BrowserRouter>
       <Routes>

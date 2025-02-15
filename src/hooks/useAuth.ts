@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 import { auth } from "../services/firebase";
-import { onAuthStateChanged, signInWithPopup, setPersistence, browserLocalPersistence, signOut, GoogleAuthProvider } from "firebase/auth";
+import { onAuthStateChanged, signInWithPopup, setPersistence, browserLocalPersistence, signOut, GoogleAuthProvider, User } from "firebase/auth";
 
-type User = {
-  name: string | null;
-  email: string | null;
-  photo: string | null;
-};
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -16,11 +11,7 @@ export const useAuth = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
-        setUser({
-          name: firebaseUser.displayName,
-          email: firebaseUser.email,
-          photo: firebaseUser.photoURL,
-        });
+        setUser(firebaseUser);
       } else {
         setUser(null);
       }
