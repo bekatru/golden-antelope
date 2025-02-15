@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-//class Transaction inmplements ITransaction
 import { Transaction } from "../modules/transaction";
-//class Account implements IAccount
 import { Account } from "../modules/account";
 
 export interface IEntity {
@@ -15,9 +13,9 @@ export interface ITransaction extends IEntity {
   amount: number;
   createdAt: string;
   type: TransactionType;
-  fromAccount: IAccount | null;
-  toAccount: IAccount | null;
   note: string | null;
+  save: (transactions: TransactionsMap) => TransactionsMap;
+  execute: (accounts: AccountsMap) => AccountsMap;
 }
 
 export interface IAccount extends IEntity {
