@@ -16,6 +16,6 @@ export class Account extends Entity implements IAccount {
     save(accounts: AccountsMap) {
       const accountsCopy = Object.assign({}, accounts);
       accountsCopy[this.id] = this;
-      return accounts;
+      return accountsCopy;
     }
   }
