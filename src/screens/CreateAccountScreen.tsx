@@ -7,7 +7,7 @@ export const CreateAccountScreen = () => {
   const navigate = useNavigate();
   const {createAccount} = useStore();
 
-  const [name, setName] = useState<string>();
+  const [name, setName] = useState<string>("");
   const [currency, setCurrency] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {

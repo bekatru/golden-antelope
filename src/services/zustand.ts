@@ -1,81 +1,41 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { v4 as uuidv4 } from "uuid";
+//class Transaction inmplements ITransaction
+import { Transaction } from "../modules/transaction";
+//class Account implements IAccount
+import { Account } from "../modules/account";
 
-export interface Category {
-  id: string;
-  name: string;
-  parent: Category;
-}
-
-interface IEntity {
+export interface IEntity {
   id: string;
 }
 
 export type TransactionType = "income" | "expense" | "transfer";
 
-interface ITransaction extends IEntity {
+export interface ITransaction extends IEntity {
   amount: number;
   createdAt: string;
   type: TransactionType;
   fromAccount: IAccount | null;
   toAccount: IAccount | null;
   note: string | null;
-}
-
-export type TransactionDto = Omit<ITransaction, "id" | "createdAt">;
-
-class Entity implements IEntity {
-  id: string;
-
-  constructor() {
-    this.id = uuidv4();
-  }
-}
-
-class Transaction extends Entity implements ITransaction {
-  amount: number;
-  createdAt: string;
-  note: string | null;
-  type: TransactionType;
-  fromAccount: IAccount | null;
-  toAccount: IAccount | null;
-
-  constructor(dto: TransactionDto) {
-    super();
-    this.createdAt = new Date().toString();
-    this.amount = dto.amount;
-    this.note = dto.note;
-    this.type = dto.type;
-    this.fromAccount = dto.fromAccount;
-    this.toAccount = dto.toAccount;
-  }
 }
 
 export interface IAccount extends IEntity {
   name: string;
   balance: number;
   currency: string;
+  save: (accounts: AccountsMap) => AccountsMap;
 }
 
+export type TransactionDto = Omit<ITransaction, "id" | "createdAt">;
 export type AccountDto = Omit<IAccount, "id" | "balance">;
 
-class Account extends Entity implements IAccount {
-  name: string;
-  balance: number;
-  currency: string;
-
-  constructor(dto: AccountDto) {
-    super();
-    this.name = dto.name;
-    this.balance = 0;
-    this.currency = dto.currency;
-  }
-}
+export type TransactionsMap = Record<string, ITransaction>;
+export type AccountsMap = Record<string, IAccount>;
 
 type Store = {
-  transactions: Record<string, Transaction>;
-  accounts: Record<string, Account>;
+  transactions: TransactionsMap;
+  accounts: AccountsMap;
   createTransaction: (data: TransactionDto) => void;
   createAccount: (data: AccountDto) => void;
 };
@@ -88,35 +48,14 @@ export const useStore = create<Store>()(
       createTransaction: (data: TransactionDto) =>
         set((state) => {
           const transaction = new Transaction(data);
-
-          const accounts = Object.assign({}, state.accounts);
-          const transactions = Object.assign({}, state.transactions);
-
-          transactions[transaction.id] = transaction;
-
-          if (["income", "transfer"].includes(transaction.type)) {
-            const toAccountId = transaction.toAccount?.id;
-            if (!toAccountId) {
-              throw new Error("Account not found");
-            }
-            accounts[toAccountId].balance += transaction.amount;
-          }
-
-          if (["expense", "transfer"].includes(transaction.type)) {
-            const fromAccountId = transaction.fromAccount?.id;
-            if (!fromAccountId) {
-              throw new Error("Account not found");
-            }
-            accounts[fromAccountId].balance -= transaction.amount;
-          }
-
+          const accounts = transaction.execute(state.accounts);
+          const transactions = transaction.save(state.transactions);
           return { transactions, accounts };
         }),
       createAccount: (data: AccountDto) =>
         set((state) => {
-          const accounts = Object.assign({}, state.accounts);
-          const newAccount = new Account(data);
-          accounts[newAccount.id] = newAccount;
+          const account = new Account(data);
+          const accounts = account.save(state.accounts);
           return { accounts };
         }
         ),
