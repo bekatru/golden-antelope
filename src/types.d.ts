@@ -17,6 +17,7 @@ interface ITransaction extends IEntity {
   note: string | null;
   toAccount: IAccount | null;
   fromAccount: IAccount | null;
+  conversionRate: number | null;
   save: (transactions: TransactionsMap) => TransactionsMap;
   execute: (accounts: AccountsMap) => AccountsMap;
 }

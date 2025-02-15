@@ -4,6 +4,7 @@ export class Transaction extends Entity implements ITransaction {
     amount: number;
     createdAt: string;
     type: TransactionType;
+    conversionRate: number | null;
     category: ICategory | null;
     note: string | null;
     fromAccount: IAccount | null;
@@ -11,13 +12,14 @@ export class Transaction extends Entity implements ITransaction {
   
     constructor(dto: TransactionDto) {
       super();
-      this.createdAt = new Date().toString();
+      this.createdAt = new Date().toISOString();
       this.amount = dto.amount;
       this.note = dto.note;
       this.type = dto.type;
       this.category = dto.category;
       this.fromAccount = dto.fromAccount;
       this.toAccount = dto.toAccount;
+      this.conversionRate = dto.conversionRate;
     }
   
     execute(accounts: AccountsMap) {
@@ -26,7 +28,7 @@ export class Transaction extends Entity implements ITransaction {
         if (!this.toAccount) {
           throw new Error("Account not found");
         }
-        this.toAccount.balance += this.amount;
+        this.toAccount.balance += this.amount * (this.conversionRate ?? 1);
         accountsCopy[this.toAccount.id] = this.toAccount;
       }
   

@@ -13,6 +13,7 @@ export const CreateTransactionScreen = () => {
   const [toAccountId, setToAccountId] = useState<string>("");
   const [type, setType] = useState<TransactionType>("expense");
   const [categoryId, setCategoryId] = useState<string>("");
+  const [conversionRate, setConversionRate] = useState<number| "">("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +27,7 @@ export const CreateTransactionScreen = () => {
       amount: Number(amount),
       note: note || null,
       type,
+      conversionRate: conversionRate || null,
       fromAccount: accounts[fromAccountId],
       toAccount: accounts[toAccountId],
       category: categories[categoryId],
@@ -104,6 +106,22 @@ export const CreateTransactionScreen = () => {
           ))}
         </select>
       )}
+
+      {
+        type == 'transfer' &&
+        accounts[fromAccountId]?.currency != accounts[toAccountId]?.currency &&
+        <input
+          autoFocus
+          type="number"
+          inputMode="decimal"
+          autoComplete="off"
+          placeholder="rate"
+          value={conversionRate}
+          onChange={(e) => setConversionRate(Number(e.target.value) || "")}
+          className="w-full p-2 text-right focus:outline-0 text-2xl"
+          required
+        />
+      }
 
       <select
         value={categoryId}
