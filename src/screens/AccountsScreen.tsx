@@ -20,11 +20,11 @@ export const AccountsScreen = () => {
   return (
     <div
       id="transactions-screen-container"
-      className="h-full flex flex-col justify-end text-xl font-light"
+      className="h-full px-4 flex flex-col justify-end text-xl font-light"
     >
       <div className="max-h-full overflow-scroll">
         {Object.values(accounts).map(({ id, name, balance, currency }) => (
-          <div key={id} className="flex justify-between py-3 mx-4 ">
+          <div key={id} className="flex justify-between py-3">
             <div className={"text-gray-700"}>{name}</div>
             <div
               className={
@@ -41,7 +41,7 @@ export const AccountsScreen = () => {
         ))}
       </div>
 
-      <div className="mb-4 mx-4 border-t flex justify-between py-3">
+      <div className="border-t flex justify-between py-3">
         <div className={"text-gray-700"}>totals</div>
         <div className="flex space-x-4">
           {totals.length ? totals.map(([currency, balance]) => (

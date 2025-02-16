@@ -14,7 +14,7 @@ export const SettingsScreen = () => {
   }
 
   return (
-    <div id="settings-screen" className="h-full flex flex-col justify-end">
+    <div id="settings-screen" className="h-full px-4 flex flex-col justify-end">
       <div>
         <NavLink to="/create/account">
           <div className="flex justify-between items-center py-3">

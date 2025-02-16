@@ -20,12 +20,12 @@ export const TransactionsScreen = () => {
   return (
     <div
       id="transactions-screen-container"
-      className="h-full flex flex-col justify-end"
+      className="h-full flex flex-col justify-end px-4"
     >
       <div className="max-h-full overflow-scroll">
         {memoizedTrx.map(({ id, createdAt, amount, type }) => (
           <NavLink key={id} to={`/view/transaction/${id}`}>
-            <div className="flex flex-row justify-between py-3 mx-4 text-xl font-light">
+            <div className="flex flex-row justify-between py-3 text-xl font-light">
               <div className="text-gray-500">
                 {new Date(createdAt).toLocaleDateString()}
               </div>
@@ -46,7 +46,7 @@ export const TransactionsScreen = () => {
         ))}
       </div>
       <NavLink to={"/create/transaction"}>
-        <div className="py-3 mx-4 border-t flex justify-center">
+        <div className="py-3 border-t flex justify-center">
           <Plus size={28} strokeWidth={1} />
         </div>
       </NavLink>
