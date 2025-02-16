@@ -12,7 +12,7 @@ export const AccountsScreen = () => {
         {Object.values(accounts).map(({ id, name, balance, currency }) => (
           <div
             key={id}
-            className="flex flex-row justify-between py-3 mx-4 text-xl font-extralight"
+            className="flex flex-row justify-between py-3 mx-4 text-xl font-[250]"
           >
             <div className={"text-gray-700"}>{name}</div>
             <div
@@ -30,7 +30,7 @@ export const AccountsScreen = () => {
         ))}
       </div>
 
-      <div className="mb-4 mx-4 border-t border-gray-500 flex justify-center"></div>
+      <div className="mb-4 mx-4 border-t flex justify-center"></div>
     </div>
   );
 };

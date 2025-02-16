@@ -21,7 +21,7 @@ export const TransactionsScreen = () => {
           ({ id, createdAt, amount, type, fromAccount, toAccount }) => (
             <NavLink key={id} to={`/view/transaction/${id}`}>
             <div
-              className="flex flex-row justify-between py-3 mx-4 text-xl font-extralight"
+              className="flex flex-row justify-between py-3 mx-4 text-xl font-[250]"
             >
               <div className="text-gray-500">
                 {new Date(createdAt).toLocaleDateString()}
@@ -44,7 +44,7 @@ export const TransactionsScreen = () => {
         )}
       </div>
       <NavLink to={"/create/transaction"}>
-        <div className="py-3 mx-4 border-t border-gray-500 flex justify-center">
+        <div className="py-3 mx-4 border-t flex justify-center">
           <Plus size={28} strokeWidth={1} />
         </div>
       </NavLink>

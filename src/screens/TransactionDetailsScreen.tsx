@@ -61,7 +61,7 @@ export const TransactionDetailScreen = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="px-4 h-full flex flex-col font-light"
+      className="px-4 h-full flex flex-col font-[250]"
     >
       <select
         disabled
@@ -159,15 +159,15 @@ export const TransactionDetailScreen = () => {
         ))}
       </select>}
 
-      <textarea
+      {transaction?.note && <textarea
         placeholder="note"
         value={note}
         onChange={(e) => setNote(e.target.value)}
         className="w-full p-2 focus:outline-0 text-2xl text-right"
           disabled
-      />
+      />}
 
-      <div className="mt-auto w-full border-t border-gray-500 flex justify-evenly">
+      <div className="mt-auto w-full border-t flex justify-evenly">
         <X
           onClick={() => navigate(-1)}
           size={28}

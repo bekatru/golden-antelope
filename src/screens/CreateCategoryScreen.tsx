@@ -32,7 +32,7 @@ export const CreateCategoryScreen = () => {
 
 
   return (
-    <form onSubmit={handleSubmit} className="px-4 h-full flex flex-col font-light">
+    <form onSubmit={handleSubmit} className="px-4 h-full flex flex-col font-[250]">
         <input
           autoFocus
           autoComplete="off"
@@ -58,7 +58,7 @@ export const CreateCategoryScreen = () => {
         </select>
 
       
-      <div className="mt-auto w-full border-t border-gray-500 flex justify-evenly">
+      <div className="mt-auto w-full border-t flex justify-evenly">
         <X onClick={() => navigate(-1)} size={28} strokeWidth={1} className="flex-1 py-4 box-content"/>
         <button type="submit" className="flex-1 py-4 box-content flex justify-center">
           <Save size={28} strokeWidth={1} />
