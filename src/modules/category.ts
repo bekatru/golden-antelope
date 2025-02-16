@@ -1,4 +1,5 @@
 import { Entity } from "./entity";
+import { EntityService } from "./entityService";
 
 export class Category extends Entity implements ICategory {
     name: string;
@@ -9,8 +10,12 @@ export class Category extends Entity implements ICategory {
         this.name = dto.name;
         this.parent = dto.parent;
     }
+}
 
-    save(categories: CategoriesMap): CategoriesMap {
-        return Object.assign({[this.id]: this}, categories);
+export class CategoryService extends EntityService {
+    save(category: ICategory) {
+        this.state.categories[category.id] = category;
+
+        return this;
     }
 }

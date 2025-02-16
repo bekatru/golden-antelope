@@ -18,21 +18,25 @@ interface ITransaction extends IEntity {
   toAccount: IAccount | null;
   fromAccount: IAccount | null;
   conversionRate: number | null;
-  save: (transactions: TransactionsMap) => TransactionsMap;
-  execute: (accounts: AccountsMap) => AccountsMap;
 }
 
 interface IAccount extends IEntity {
   name: string;
   balance: number;
   currency: string;
-  save: (accounts: AccountsMap) => AccountsMap;
 }
 
-type TransactionDto = Omit<ITransaction, "id" | "createdAt" | "save" | "execute">;
-type AccountDto = Omit<IAccount, "id" | "balance" | "save">;
+type TransactionDto = Omit<ITransaction, "id" | "createdAt">;
+type AccountDto = Omit<IAccount, "id" | "balance">;
 type CategoryDto = Omit<ICategory, "id">;
 
 type TransactionsMap = Record<string, ITransaction>;
 type AccountsMap = Record<string, IAccount>;
 type CategoriesMap = Record<string, ICategory>;
+
+interface State {
+  timestamp: number;
+  transactions: TransactionsMap;
+  accounts: AccountsMap;
+  categories: CategoriesMap;
+}
