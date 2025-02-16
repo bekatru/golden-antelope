@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import {  AccountsScreen, CreateAccountScreen, CreateCategoryScreen, CreateTransactionScreen, SettingsScreen, TransactionsScreen } from "./screens";
+import {  AccountsScreen, CreateAccountScreen, CreateCategoryScreen, CreateTransactionScreen, SettingsScreen, TransactionDetailScreen, TransactionsScreen } from "./screens";
 import { BottomTabsLayout } from "./components/BottomTabs/BottomTabsLayout";
-import { BaseLayout } from "./components/BaseLayout/BaseLayout";
 import { useEffect } from "react";
 
 import { useStore } from "./services/zustand";
@@ -52,10 +51,14 @@ const App = () => {
           <Route path="settings" element={<SettingsScreen />} />
         </Route>
         
-        <Route path="/create" element={<BaseLayout/>}>
+        <Route path="/create">
           <Route path="transaction" element={<CreateTransactionScreen/>}/>
           <Route path="account" element={<CreateAccountScreen/>}/>
           <Route path="category" element={<CreateCategoryScreen/>} />
+        </Route>
+
+        <Route path="/view">
+          <Route path="transaction/:transactionId" element={<TransactionDetailScreen/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
