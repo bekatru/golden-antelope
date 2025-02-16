@@ -26,7 +26,7 @@ export const TransactionDetailScreen = () => {
     transaction?.conversionRate ?? 1
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (_: React.FormEvent) => {
     // e.preventDefault();
     // if (amount === "" || amount <= 0) {
     //   alert("Please enter a valid amount.");
