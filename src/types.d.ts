@@ -15,10 +15,23 @@ interface ITransaction extends IEntity {
   type: TransactionType;
   category: ICategory | null;
   note: string | null;
-  toAccount: IAccount | null;
-  fromAccount: IAccount | null;
-  conversionRate: number | null;
 }
+
+interface IExpense extends ITransaction {
+  fromAccount: IAccount;
+}
+
+interface IIncome extends ITransaction {
+  toAccount: IAccount;
+}
+
+interface ITransfer extends ITransaction {
+  toAccount: IAccount;
+  fromAccount: IAccount;
+  conversionRate: number;
+}
+
+type TTransaction = IExpense | IIncome | ITransfer;
 
 interface IAccount extends IEntity {
   name: string;
@@ -26,11 +39,16 @@ interface IAccount extends IEntity {
   currency: string;
 }
 
-type TransactionDto = Omit<ITransaction, "id" | "createdAt">;
+type TransactionDto = Omit<TTransaction, "id" | "createdAt">;
+
+type IncomeDto = Omit<IIncome, "id" | "createdAt">;
+type ExpenseDto = Omit<IExpense, "id" | "createdAt">;
+type TransferDto = Omit<ITransfer, "id" | "createdAt">;
+
 type AccountDto = Omit<IAccount, "id" | "balance">;
 type CategoryDto = Omit<ICategory, "id">;
 
-type TransactionsMap = Record<string, ITransaction>;
+type TransactionsMap = Record<string, TTransaction>;
 type AccountsMap = Record<string, IAccount>;
 type CategoriesMap = Record<string, ICategory>;
 

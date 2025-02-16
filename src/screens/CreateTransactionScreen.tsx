@@ -2,38 +2,63 @@ import { useState } from "react";
 import { useStore } from "../services/zustand";
 import { Save, X } from "lucide-react";
 import { useNavigate } from "react-router";
+import { Expense, Income, Transfer } from "../modules/transaction";
 
 export const CreateTransactionScreen = () => {
   const navigate = useNavigate();
   const { createTransaction, accounts, categories } = useStore();
 
-  const [amount, setAmount] = useState<number | "">("");
+  const [amount, setAmount] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [fromAccountId, setFromAccountId] = useState<string>("");
   const [toAccountId, setToAccountId] = useState<string>("");
   const [type, setType] = useState<TransactionType>("expense");
   const [categoryId, setCategoryId] = useState<string>("");
-  const [conversionRate, setConversionRate] = useState<number| "">("");
+  const [conversionRate, setConversionRate] = useState<string>("1");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (amount === "" || amount <= 0) {
-      alert("Please enter a valid amount.");
+    if (amount === undefined) {
       return;
     }
 
     const newTransaction: TransactionDto = {
-      amount: Number(amount),
       type,
+      amount: Number(amount),
       note: note || null,
-      conversionRate: conversionRate || null,
-      fromAccount: accounts[fromAccountId] || null,
-      toAccount: accounts[toAccountId] || null,
       category: categories[categoryId] || null,
     };
 
-    createTransaction(newTransaction);
+    switch (type) {
+      case "income":
+        createTransaction(
+          new Income({
+            ...newTransaction,
+            toAccount: accounts[toAccountId],
+          })
+        );
+        break;
+      case "expense":
+        createTransaction(
+          new Expense({
+            ...newTransaction,
+            fromAccount: accounts[fromAccountId],
+          })
+        );
+        break;
+      case "transfer":
+        createTransaction(
+          new Transfer({
+            ...newTransaction,
+            toAccount: accounts[toAccountId],
+            fromAccount: accounts[fromAccountId],
+            conversionRate: Number(conversionRate),
+          })
+        );
+        break;
+    }
+
 
     // Reset form
     setAmount("");
@@ -66,7 +91,7 @@ export const CreateTransactionScreen = () => {
         autoComplete="off"
         placeholder="amount"
         value={amount}
-        onChange={(e) => setAmount(Number(e.target.value) || "")}
+        onChange={(e) => setAmount(e.target.value)}
         className="w-full p-2 text-right focus:outline-0 text-2xl"
         required
       />
@@ -117,7 +142,7 @@ export const CreateTransactionScreen = () => {
           autoComplete="off"
           placeholder="rate"
           value={conversionRate}
-          onChange={(e) => setConversionRate(Number(e.target.value) || "")}
+          onChange={(e) => setConversionRate(e.target.value)}
           className="w-full p-2 text-right focus:outline-0 text-2xl"
           required
         />

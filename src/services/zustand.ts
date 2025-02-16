@@ -1,15 +1,15 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Transaction, TransactionService } from "../modules/transaction";
-import { Account, AccountsService } from "../modules/account";
-import { Category, CategoryService } from "../modules/category";
+import { TransactionService } from "../modules/transaction";
+import { AccountsService } from "../modules/account";
+import { CategoryService } from "../modules/category";
 
 interface StoreActions {
   hydrate: (store: Store) => void;
-  createTransaction: (data: TransactionDto) => void;
-  createAccount: (data: AccountDto) => void;
-  createCategory: (data: CategoryDto) => void;
-  deleteTransaction: (transaction: ITransaction) => void;
+  createTransaction: (transaction: TTransaction) => void;
+  createAccount: (account: IAccount) => void;
+  createCategory: (category: ICategory) => void;
+  deleteTransaction: (transaction: TTransaction) => void;
 }
 
 type Store = State & StoreActions;
@@ -26,28 +26,28 @@ export const useStore = create<Store>()(
     (set) => ({
       ...initialState,
       hydrate: (store: Store) => set(() => store),
-      createTransaction: (data: TransactionDto) =>
+      createTransaction: (transaction: TTransaction) =>
         set((state) => {
           return new TransactionService(state)
-            .execute(new Transaction(data))
+            .execute(transaction)
             .getState();
         }),
-      deleteTransaction: (transaction: ITransaction) =>
+      deleteTransaction: (transaction: TTransaction) =>
         set((state) => {
           return new TransactionService(state)
             .delete(transaction)
             .getState();
         }),
-      createAccount: (data: AccountDto) =>
+      createAccount: (account: IAccount) =>
         set((state) => {
           return new AccountsService(state)
-            .save(new Account(data))
+            .save(account)
             .getState();
         }),
-      createCategory: (data: CategoryDto) =>
+      createCategory: (category: ICategory) =>
         set((state) => {
           return new CategoryService(state)
-            .save(new Category(data))
+            .save(category)
             .getState();
         }),
     }),

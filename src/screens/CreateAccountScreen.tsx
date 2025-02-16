@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useStore } from "../services/zustand";
 import { Save, X} from "lucide-react";
 import { useNavigate } from "react-router";
+import { Account } from "../modules/account";
 
 export const CreateAccountScreen = () => {
   const navigate = useNavigate();
@@ -23,12 +24,10 @@ export const CreateAccountScreen = () => {
         return;
     }
 
-    const newAccount: AccountDto = {
+    createAccount(new Account({
       name,
       currency,
-    };
-
-    createAccount(newAccount);
+    }));
 
     // Reset form
     setName("");
