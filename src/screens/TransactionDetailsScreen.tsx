@@ -8,22 +8,22 @@ export const TransactionDetailScreen = () => {
   const params = useParams() as { transactionId: string };
   const { accounts, categories, transactions, deleteTransaction } = useStore();
 
-  const transaction: ITransaction | undefined = transactions[params.transactionId];
+  const transaction: TTransaction | undefined = transactions[params.transactionId];
 
   const [amount, setAmount] = useState<number>(transaction?.amount ?? NaN);
   const [note, setNote] = useState<string>(transaction?.note ?? "");
   const [fromAccountId, setFromAccountId] = useState<string>(
-    transaction?.fromAccount?.id ?? ""
+    'fromAccount' in transaction ? transaction.fromAccount.id : ""
   );
   const [toAccountId, setToAccountId] = useState<string>(
-    transaction?.toAccount?.id ?? ""
+    'toAccount' in transaction ? transaction.toAccount.id : ""
   );
   const [type, setType] = useState<TransactionType>(transaction?.type);
   const [categoryId, setCategoryId] = useState<string>(
     transaction?.category?.id ?? ""
   );
   const [conversionRate, setConversionRate] = useState<number>(
-    transaction?.conversionRate ?? 1
+    'conversionRate' in transaction ? transaction.conversionRate : 1
   );
 
   const handleSubmit = (_: React.FormEvent) => {

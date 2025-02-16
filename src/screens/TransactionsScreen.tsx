@@ -18,7 +18,7 @@ export const TransactionsScreen = () => {
     >
       <div className="max-h-full overflow-scroll">
         {memoizedTrx.map(
-          ({ id, createdAt, amount, type, fromAccount, toAccount }) => (
+          ({ id, createdAt, amount, type}) => (
             <NavLink key={id} to={`/view/transaction/${id}`}>
             <div
               className="flex flex-row justify-between py-3 mx-4 text-xl font-light"
@@ -36,7 +36,7 @@ export const TransactionsScreen = () => {
                 }
               >
                 {type === "expense" ? "-" : type === "income" ? "+" : "="}
-                {amount} {fromAccount?.currency ?? toAccount?.currency}
+                {amount}
               </div>
             </div>
             </NavLink>
