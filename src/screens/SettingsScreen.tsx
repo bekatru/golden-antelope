@@ -18,13 +18,13 @@ export const SettingsScreen = () => {
       <div>
         <NavLink to="/create/account">
           <div className="flex justify-between items-center py-3">
-            <div className="font-[250] text-xl">account</div>
+            <div className="font-light text-xl">account</div>
             <Plus size={28} strokeWidth={1} />
           </div>
         </NavLink>
         <NavLink to="/create/category">
           <div className="flex justify-between items-center py-3">
-            <div className="font-[250] text-xl">category</div>
+            <div className="font-light text-xl">category</div>
             <Plus size={28} strokeWidth={1} />
           </div>
         </NavLink>
@@ -35,7 +35,7 @@ export const SettingsScreen = () => {
         className="flex justify-between items-center border-t py-3"
         onClick={auth.user ? handleLogoutPress : auth.login}
       >
-        <div className="font-[250] text-xl">
+        <div className="font-light text-xl">
           {auth.user?.email ?? "log in"}
         </div>
         <DynamicIcon

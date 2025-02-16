@@ -46,7 +46,7 @@ export const CreateTransactionScreen = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="px-4 h-full flex flex-col font-[250]"
+      className="px-4 h-full flex flex-col font-light"
     >
       <select
         value={type}

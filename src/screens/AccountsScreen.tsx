@@ -12,7 +12,7 @@ export const AccountsScreen = () => {
         {Object.values(accounts).map(({ id, name, balance, currency }) => (
           <div
             key={id}
-            className="flex flex-row justify-between py-3 mx-4 text-xl font-[250]"
+            className="flex flex-row justify-between py-3 mx-4 text-xl font-light"
           >
             <div className={"text-gray-700"}>{name}</div>
             <div
