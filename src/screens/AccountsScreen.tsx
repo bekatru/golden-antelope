@@ -4,8 +4,8 @@ import { useStore } from "../services/zustand";
 export const AccountsScreen = () => {
   const { accounts } = useStore();
 
-  const totals: Record<string, number> = useMemo(() => {
-    return Object.values(accounts).reduce((result, account) => {
+  const totals: [string, number][] = useMemo(() => {
+    const totalsMap = Object.values(accounts).reduce((result, account) => {
       if (result[account.currency]) {
         result[account.currency] += account.balance;
       } else {
@@ -13,6 +13,8 @@ export const AccountsScreen = () => {
       }
       return result;
     }, {} as Record<string, number>);
+
+    return Object.entries(totalsMap);
   }, [accounts]);
 
   return (
@@ -42,7 +44,7 @@ export const AccountsScreen = () => {
       <div className="mb-4 mx-4 border-t flex justify-between py-3">
         <div className={"text-gray-700"}>totals</div>
         <div className="flex space-x-4">
-          {Object.entries(totals).map(([currency, balance]) => (
+          {totals.length ? totals.map(([currency, balance]) => (
             <div
               className={
                 balance > 0
@@ -54,7 +56,7 @@ export const AccountsScreen = () => {
             >
               {balance} {currency}
             </div>
-          ))}
+          )) : '-'}
         </div>
       </div>
     </div>

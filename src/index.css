@@ -2,7 +2,7 @@
 
 * {
   -webkit-tap-highlight-color: transparent;
-  overscroll-behavior: none;
+  /* overscroll-behavior: none; */
 }
 
 body {

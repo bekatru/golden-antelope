@@ -7,22 +7,25 @@ export const TransactionsScreen = () => {
   const { transactions } = useStore();
 
   const memoizedTrx = useMemo(
-    () => Object.values(transactions).slice().reverse(),
+    () =>
+      Object.values(transactions)
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        ),
     [transactions]
   );
-  
+
   return (
     <div
       id="transactions-screen-container"
       className="h-full flex flex-col justify-end"
     >
       <div className="max-h-full overflow-scroll">
-        {memoizedTrx.map(
-          ({ id, createdAt, amount, type}) => (
-            <NavLink key={id} to={`/view/transaction/${id}`}>
-            <div
-              className="flex flex-row justify-between py-3 mx-4 text-xl font-light"
-            >
+        {memoizedTrx.map(({ id, createdAt, amount, type }) => (
+          <NavLink key={id} to={`/view/transaction/${id}`}>
+            <div className="flex flex-row justify-between py-3 mx-4 text-xl font-light">
               <div className="text-gray-500">
                 {new Date(createdAt).toLocaleDateString()}
               </div>
@@ -39,9 +42,8 @@ export const TransactionsScreen = () => {
                 {amount}
               </div>
             </div>
-            </NavLink>
-          )
-        )}
+          </NavLink>
+        ))}
       </div>
       <NavLink to={"/create/transaction"}>
         <div className="py-3 mx-4 border-t flex justify-center">
