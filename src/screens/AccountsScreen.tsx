@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useStore } from "../services/zustand";
+import { CURRENCIES } from "../constants/currencies";
 
 export const AccountsScreen = () => {
   const { accounts } = useStore();
@@ -35,7 +36,8 @@ export const AccountsScreen = () => {
                   : ""
               }
             >
-              {balance} {currency}
+              {balance}
+              {CURRENCIES[currency].symbol}
             </div>
           </div>
         ))}
@@ -54,7 +56,8 @@ export const AccountsScreen = () => {
                   : ""
               }
             >
-              {balance} {currency}
+              {balance}
+              {CURRENCIES[currency].symbol}
             </div>
           )) : '-'}
         </div>
