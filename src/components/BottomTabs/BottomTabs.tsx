@@ -2,35 +2,34 @@ import { List, WalletMinimal, Settings2 } from "lucide-react";
 import { NavLink } from "react-router";
 
 export const BottomTabs = () => {
-  const bottomTabClassNames = "p-4 flex grow justify-center";
   return (
     <div id="bottom-tabs">
       <NavLink
         to="transactions"
-        className={({ isActive }) =>
-          `${bottomTabClassNames} text-${
-            isActive ? "black" : "gray-500"
-          } dark:text-${isActive ? "white" : "gray-500"}`
+        key={'transactions'}
+        className={({ isActive }) => isActive
+          ? "p-4 flex grow justify-center text-black dark:text-white"
+          : "p-4 flex grow justify-center text-gray-500"
         }
       >
         <List size={28} strokeWidth={1} />
       </NavLink>
       <NavLink
         to="accounts"
-        className={({ isActive }) =>
-          `${bottomTabClassNames} text-${
-            isActive ? "black" : "gray-500"
-          } dark:text-${isActive ? "white" : "gray-500"}`
+        key="accounts"
+        className={({ isActive }) => isActive
+          ? "p-4 flex grow justify-center text-black dark:text-white"
+          : "p-4 flex grow justify-center text-gray-500"
         }
       >
         <WalletMinimal size={28} strokeWidth={1} />
       </NavLink>
       <NavLink
         to="settings"
-        className={({ isActive }) =>
-          `${bottomTabClassNames} text-${
-            isActive ? "black" : "gray-500"
-          } dark:text-${isActive ? "white" : "gray-500"}`
+        key="settings"
+        className={({ isActive }) => isActive
+          ? "p-4 flex grow justify-center text-black dark:text-white"
+          : "p-4 flex grow justify-center text-gray-500"
         }
       >
         <Settings2 size={28} strokeWidth={1} />
