@@ -2,12 +2,15 @@ import { List, WalletMinimal, Settings2 } from "lucide-react";
 import { NavLink } from "react-router";
 
 export const BottomTabs = () => {
+  const bottomTabClassNames = "p-4 flex grow justify-center";
   return (
     <div id="bottom-tabs">
       <NavLink
         to="transactions"
         className={({ isActive }) =>
-          ["bottom-tab", isActive && "active"].join(" ")
+          `${bottomTabClassNames} text-${
+            isActive ? "black" : "gray-500"
+          } dark:text-${isActive ? "white" : "gray-500"}`
         }
       >
         <List size={28} strokeWidth={1} />
@@ -15,7 +18,9 @@ export const BottomTabs = () => {
       <NavLink
         to="accounts"
         className={({ isActive }) =>
-          ["bottom-tab", isActive && "active"].join(" ")
+          `${bottomTabClassNames} text-${
+            isActive ? "black" : "gray-500"
+          } dark:text-${isActive ? "white" : "gray-500"}`
         }
       >
         <WalletMinimal size={28} strokeWidth={1} />
@@ -23,7 +28,9 @@ export const BottomTabs = () => {
       <NavLink
         to="settings"
         className={({ isActive }) =>
-          ["bottom-tab", isActive && "active"].join(" ")
+          `${bottomTabClassNames} text-${
+            isActive ? "black" : "gray-500"
+          } dark:text-${isActive ? "white" : "gray-500"}`
         }
       >
         <Settings2 size={28} strokeWidth={1} />

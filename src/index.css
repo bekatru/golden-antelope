@@ -31,19 +31,6 @@ body {
   right: 0;
 }
 
-.bottom-tab {
-  padding: 16px;
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  color: grey;
-}
-
-
-.bottom-tab.active {
-  color: black;
-}
-
 #settings-screen-header {
   flex-direction: row;
   justify-content: space-between;

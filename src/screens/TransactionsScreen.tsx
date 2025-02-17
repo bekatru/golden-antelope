@@ -26,7 +26,7 @@ export const TransactionsScreen = () => {
         {memoizedTrx.map(({ id, createdAt, amount, type }) => (
           <NavLink key={id} to={`/view/transaction/${id}`}>
             <div className="flex flex-row justify-between py-3 text-xl font-light">
-              <div className="text-gray-500">
+              <div>
                 {new Date(createdAt).toLocaleDateString()}
               </div>
               <div
@@ -35,7 +35,7 @@ export const TransactionsScreen = () => {
                     ? "text-red-500"
                     : type === "income"
                     ? "text-green-500"
-                    : "text-black"
+                    : ""
                 }
               >
                 {type === "expense" ? "-" : type === "income" ? "+" : "="}
