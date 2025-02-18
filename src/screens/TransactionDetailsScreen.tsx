@@ -1,191 +1,123 @@
 import { useState } from "react";
 import { useStore } from "../services/zustand";
-import { Trash, X } from "lucide-react";
+import { Pencil, Save, Trash } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
+import {
+  AccountSelect,
+  AmountInput,
+  BackButton,
+  CategorySelect,
+  ConversionRateInput,
+  NoteInput,
+  TransactionTypeSelect,
+} from "../components";
 
 export const TransactionDetailScreen = () => {
   const navigate = useNavigate();
   const params = useParams() as { transactionId: string };
-  const { accounts, categories, transactions, deleteTransaction } = useStore();
+  const { transactions, deleteTransaction } = useStore();
 
-  const transaction: TTransaction | undefined = transactions[params.transactionId];
+  const transaction: TTransaction | undefined =
+    transactions[params.transactionId];
 
-  const [amount, setAmount] = useState<number>(transaction?.amount ?? NaN);
+  const [editMode, setEditMode] = useState(false);
+
   const [note, setNote] = useState<string>(transaction?.note ?? "");
-  const [fromAccountId, setFromAccountId] = useState<string>(
-    'fromAccount' in transaction ? transaction.fromAccount.id : ""
-  );
-  const [toAccountId, setToAccountId] = useState<string>(
-    'toAccount' in transaction ? transaction.toAccount.id : ""
-  );
-  const [type, setType] = useState<TransactionType>(transaction?.type);
   const [categoryId, setCategoryId] = useState<string>(
     transaction?.category?.id ?? ""
   );
-  const [conversionRate, setConversionRate] = useState<number>(
-    'conversionRate' in transaction ? transaction.conversionRate : 1
-  );
 
-  const handleSubmit = (_: React.FormEvent) => {
-    // e.preventDefault();
-    // if (amount === "" || amount <= 0) {
-    //   alert("Please enter a valid amount.");
-    //   return;
-    // }
-    // const newTransaction: TransactionDto = {
-    //   amount: Number(amount),
-    //   type,
-    //   note: note || null,
-    //   conversionRate: conversionRate || null,
-    //   fromAccount: accounts[fromAccountId] || null,
-    //   toAccount: accounts[toAccountId] || null,
-    //   category: categories[categoryId] || null,
-    // };
-    // createTransaction(newTransaction);
-    // // Reset form
-    // setAmount("");
-    // setNote("");
-    // setFromAccountId("");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
   };
 
   const handleDeleteButtonPress = () => {
-    const confirmation = confirm('delete transaction?');
+    const confirmation = confirm("delete transaction?");
     if (confirmation) {
       deleteTransaction(transaction);
       navigate(-1);
     }
-  }
+  };
 
-  const accountsArray = Object.values(accounts);
+  const handleEditButtonPress = () => {
+    setEditMode(true);
+  };
+
+  if (!transaction) {
+    return null;
+  }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="px-4 h-full flex flex-col font-light"
+      className="px-4 h-full flex flex-col font-light text-2xl"
     >
-      <select
-        disabled
-        value={type}
-        onChange={(e) => setType(e.target.value as TransactionType)}
-        className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
-        required
-      >
-        <option value={"expense" as TransactionType}>expense</option>
-        <option value={"income" as TransactionType}>income</option>
-        <option value={"transfer" as TransactionType}>transfer</option>
-      </select>
+      <TransactionTypeSelect disabled value={transaction.type} />
 
-      <input
-        disabled
-        autoFocus
-        type="number"
-        inputMode="decimal"
-        autoComplete="off"
-        placeholder="amount"
-        value={amount}
-        onChange={(e) => setAmount(Number(e.target.value))}
-        className="w-full p-2 text-right focus:outline-0 text-2xl"
-        required
-      />
+      <AmountInput disabled value={transaction.amount.toString()} />
 
-      {type != "income" && (
-        <select
+      {"fromAccount" in transaction && (
+        <AccountSelect
           disabled
-          value={fromAccountId}
-          onChange={(e) => setFromAccountId(e.target.value)}
-          className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
-          required
-        >
-          <option key={"select-account"} value={""} disabled>
-            from account
-          </option>
-          {accountsArray.map(({ id, name }) => (
-            <option key={id} value={id} disabled={id === toAccountId}>
-              from {name}
-            </option>
-          ))}
-        </select>
+          value={transaction.fromAccount.id}
+          required={transaction.type != "income"}
+          placeholderPrefix="from"
+        />
+      )}
+      {"toAccount" in transaction && (
+        <AccountSelect
+          disabled
+          value={transaction.toAccount.id}
+          required={transaction.type != "expense"}
+          placeholderPrefix="to"
+        />
       )}
 
-      {type != "expense" && (
-        <select
-          disabled
-          value={toAccountId}
-          onChange={(e) => setToAccountId(e.target.value)}
-          className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
-          required
-        >
-          <option key={"select-account"} value={""} disabled>
-            to account
-          </option>
-          {accountsArray.map(({ id, name }) => (
-            <option key={id} value={id} disabled={id === fromAccountId}>
-              to {name}
-            </option>
-          ))}
-        </select>
-      )}
-
-      {type == "transfer" &&
-        accounts[fromAccountId]?.currency !=
-          accounts[toAccountId]?.currency && (
-          <input
+      {transaction.type == "transfer" &&
+        "fromAccount" in transaction &&
+        "toAccount" in transaction &&
+        transaction.fromAccount.currency != transaction.toAccount.currency && (
+          <ConversionRateInput
             disabled
-            autoFocus
-            type="number"
-            inputMode="decimal"
-            autoComplete="off"
-            placeholder="rate"
-            value={conversionRate}
-            onChange={(e) => setConversionRate(Number(e.target.value))}
-            className="w-full p-2 text-right focus:outline-0 text-2xl"
-            required
+            value={transaction.conversionRate.toString()}
           />
         )}
 
-      {transaction?.category && <select
-        disabled
-        value={categoryId}
-        onChange={(e) => setCategoryId(e.target.value)}
-        className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
-      >
-        <option value="" disabled>
-          select category
-        </option>
-        {Object.values(categories).map(({ name, id }) => (
-          <option key={id} value={id}>
-            {name}
-          </option>
-        ))}
-      </select>}
+      {(categoryId || editMode) && (
+        <CategorySelect
+          disabled={!editMode}
+          value={categoryId}
+          onChange={setCategoryId}
+        />
+      )}
 
-      {transaction?.note && <textarea
-        placeholder="note"
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        className="w-full p-2 focus:outline-0 text-2xl text-right"
-          disabled
-      />}
+      {(note || editMode) && (
+        <NoteInput disabled={!editMode} value={note} onChange={setNote} />
+      )}
 
       <div className="mt-auto w-full border-t flex justify-evenly">
-        <X
-          onClick={() => navigate(-1)}
-          size={28}
-          strokeWidth={1}
-          className="flex-1 py-4 box-content"
-        />
+        <BackButton />
         <Trash
           onClick={handleDeleteButtonPress}
           size={28}
           strokeWidth={1}
-          className="flex-1 py-4 box-content"
+          className="flex-1 py-4 box-content text-red-500"
         />
-        {/* <button
-          type="submit"
-          className="flex-1 py-4 box-content flex justify-center"
-        >
-          <Save size={28} strokeWidth={1} />
-        </button> */}
+        {!editMode ? (
+          <Pencil
+            onClick={handleEditButtonPress}
+            size={28}
+            strokeWidth={1}
+            className="flex-1 py-4 box-content"
+          />
+        ) : (
+          <button
+            type="submit"
+            className="flex-1 py-4 box-content flex justify-center"
+          >
+            <Save size={28} strokeWidth={1} />
+          </button>
+        )}
       </div>
     </form>
   );

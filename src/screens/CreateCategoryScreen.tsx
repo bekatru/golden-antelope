@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useStore } from "../services/zustand";
-import { Save, X } from "lucide-react";
-import { useNavigate } from "react-router";
+import { Save } from "lucide-react";
 import { Category } from "../modules/category";
+import { BackButton } from "../components";
 
 export const CreateCategoryScreen = () => {
-  const navigate = useNavigate();
   const { createCategory, categories } = useStore();
 
   const [name, setName] = useState<string>("");
@@ -63,12 +62,7 @@ export const CreateCategoryScreen = () => {
       </select>
 
       <div className="mt-auto w-full border-t flex justify-evenly">
-        <X
-          onClick={() => navigate(-1)}
-          size={28}
-          strokeWidth={1}
-          className="flex-1 py-4 box-content"
-        />
+        <BackButton />
         <button
           type="submit"
           className="flex-1 py-4 box-content flex justify-center"

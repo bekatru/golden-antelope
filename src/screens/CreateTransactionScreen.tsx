@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { useStore } from "../services/zustand";
-import { Save, X } from "lucide-react";
-import { useNavigate } from "react-router";
+import { Save } from "lucide-react";
 import { Expense, Income, Transfer } from "../modules/transaction";
+import {
+  AccountSelect,
+  BackButton,
+  CategorySelect,
+  TransactionTypeSelect,
+  AmountInput,
+  ConversionRateInput,
+  NoteInput,
+} from "../components";
 
 export const CreateTransactionScreen = () => {
-  const navigate = useNavigate();
   const { createTransaction, accounts, categories } = useStore();
 
   const [amount, setAmount] = useState<string>("");
@@ -16,10 +23,23 @@ export const CreateTransactionScreen = () => {
   const [categoryId, setCategoryId] = useState<string>("");
   const [conversionRate, setConversionRate] = useState<string>("1");
 
+  const handleTypeChange = (type: TransactionType) => {
+    switch (type) {
+      case "income":
+        setFromAccountId("");
+        break;
+      case "expense":
+        setToAccountId("");
+        break;
+      case "transfer":
+    }
+    setType(type);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (amount === undefined) {
+    if (!amount) {
       return;
     }
 
@@ -59,124 +79,55 @@ export const CreateTransactionScreen = () => {
         break;
     }
 
-
-    // Reset form
     setAmount("");
     setNote("");
     setFromAccountId("");
+    setToAccountId("");
+    setType;
+    setCategoryId("");
+    setConversionRate("");
   };
-
-  const accountsArray = Object.values(accounts);
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="px-4 h-full flex flex-col font-light"
+      className="px-4 h-full flex flex-col font-light text-2xl"
     >
-      <select
-        value={type}
-        onChange={(e) => setType(e.target.value as TransactionType)}
-        className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
-        required
-      >
-        <option value={"expense" as TransactionType}>expense</option>
-        <option value={"income" as TransactionType}>income</option>
-        <option value={"transfer" as TransactionType}>transfer</option>
-      </select>
-
-      <input
-        autoFocus
-        type="number"
-        inputMode="decimal"
-        autoComplete="off"
-        placeholder="amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        className="w-full p-2 text-right focus:outline-0 text-2xl"
-        required
+      <TransactionTypeSelect value={type} onChange={handleTypeChange} />
+      <AmountInput value={amount} onChange={setAmount} />
+      <AccountSelect
+        value={fromAccountId}
+        onChange={setFromAccountId}
+        required={type != "income"}
+        disabled={type == "income"}
+        placeholderPrefix="from"
+        disabledOptionIds={[toAccountId]}
+      />
+      <AccountSelect
+        value={toAccountId}
+        onChange={setToAccountId}
+        required={type != "expense"}
+        disabled={type == "expense"}
+        placeholderPrefix="to"
+        disabledOptionIds={[fromAccountId]}
       />
 
-      {type != "income" && (
-        <select
-          value={fromAccountId}
-          onChange={(e) => setFromAccountId(e.target.value)}
-          className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
-          required
-        >
-          <option key={"select-account"} value={""} disabled>
-            from account
-          </option>
-          {accountsArray.map(({ id, name }) => (
-            <option key={id} value={id} disabled={id === toAccountId}>
-              from {name}
-            </option>
-          ))}
-        </select>
-      )}
+      {type == "transfer" &&
+        fromAccountId &&
+        toAccountId &&
+        accounts[fromAccountId]?.currency !=
+          accounts[toAccountId]?.currency && (
+          <ConversionRateInput
+            value={conversionRate}
+            onChange={setConversionRate}
+          />
+        )}
 
-      {type != "expense" && (
-        <select
-          value={toAccountId}
-          onChange={(e) => setToAccountId(e.target.value)}
-          className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
-          required
-        >
-          <option key={"select-account"} value={""} disabled>
-            to account
-          </option>
-          {accountsArray.map(({ id, name }) => (
-            <option key={id} value={id} disabled={id === fromAccountId}>
-              to {name}
-            </option>
-          ))}
-        </select>
-      )}
-
-      {
-        type == 'transfer' &&
-        accounts[fromAccountId]?.currency != accounts[toAccountId]?.currency &&
-        <input
-          autoFocus
-          type="number"
-          inputMode="decimal"
-          autoComplete="off"
-          placeholder="rate"
-          value={conversionRate}
-          onChange={(e) => setConversionRate(e.target.value)}
-          className="w-full p-2 text-right focus:outline-0 text-2xl"
-          required
-        />
-      }
-
-      <select
-        value={categoryId}
-        onChange={(e) => setCategoryId(e.target.value)}
-        className="w-full p-2 text-right focus:outline-0 text-2xl placeholder:text-gray-500"
-      >
-        <option value="" disabled>
-          select category
-        </option>
-        {Object.values(categories).map(({ name, id }) => (
-          <option key={id} value={id}>
-            {name}
-          </option>
-        ))}
-      </select>
-
-      <textarea
-        placeholder="note"
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        className="w-full p-2 focus:outline-0 text-2xl text-right"
-      />
+      <CategorySelect value={categoryId} onChange={setCategoryId} />
+      <NoteInput value={note} onChange={setNote} />
 
       <div className="mt-auto w-full border-t flex justify-evenly">
-        <X
-          onClick={() => navigate(-1)}
-          size={28}
-          strokeWidth={1}
-          className="flex-1 py-4 box-content"
-        />
+        <BackButton />
         <button
           type="submit"
           className="flex-1 py-4 box-content flex justify-center"
