@@ -64,7 +64,7 @@ export class TransactionService extends EntityService {
       }
       const transactionToAccountBalanceValueDecimal = new Big(transaction.toAccount.balance);
       const transactionConversionRateDecimal = "conversionRate" in transaction ?  new Big(transaction.conversionRate) : 1;
-      transaction.toAccount.balance = transactionToAccountBalanceValueDecimal.plus(transactionAmountDecimal.mul(transactionConversionRateDecimal)).toNumber();
+      transaction.toAccount.balance = Number(transactionToAccountBalanceValueDecimal.plus(transactionAmountDecimal.mul(transactionConversionRateDecimal)).toFixed(2));
       this.state.accounts[transaction.toAccount.id] = transaction.toAccount;
     }
 
@@ -74,7 +74,7 @@ export class TransactionService extends EntityService {
       }
 
       const transactionFromAccountBalanceValueDecimal = new Big(transaction.fromAccount.balance);
-      transaction.fromAccount.balance = transactionFromAccountBalanceValueDecimal.minus(transactionAmountDecimal).toNumber();
+      transaction.fromAccount.balance = Number(transactionFromAccountBalanceValueDecimal.minus(transactionAmountDecimal).toFixed(2));
       this.state.accounts[transaction.fromAccount.id] = transaction.fromAccount;
     }
 
