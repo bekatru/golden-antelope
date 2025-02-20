@@ -1,3 +1,4 @@
+import Big from "big.js";
 import { Entity } from "./entity";
 import { EntityService } from "./entityService";
 
@@ -54,14 +55,16 @@ export class Transfer extends Transaction implements ITransfer {
 
 export class TransactionService extends EntityService {
   execute(transaction: TTransaction) {
+
+    const transactionAmountDecimal = new Big(transaction.amount);
+
     if (["income", "transfer"].includes(transaction.type)) {
       if (!("toAccount" in transaction) || !transaction.toAccount) {
         throw new Error("Target account is not found");
       }
-
-      transaction.toAccount.balance +=
-        transaction.amount *
-        ("conversionRate" in transaction ? transaction.conversionRate : 1);
+      const transactionToAccountBalanceValueDecimal = new Big(transaction.toAccount.balance);
+      const transactionConversionRateDecimal = "conversionRate" in transaction ?  new Big(transaction.conversionRate) : 1;
+      transaction.toAccount.balance = transactionToAccountBalanceValueDecimal.plus(transactionAmountDecimal.mul(transactionConversionRateDecimal)).toNumber();
       this.state.accounts[transaction.toAccount.id] = transaction.toAccount;
     }
 
@@ -70,7 +73,8 @@ export class TransactionService extends EntityService {
         throw new Error("Source account not found");
       }
 
-      transaction.fromAccount.balance -= transaction.amount;
+      const transactionFromAccountBalanceValueDecimal = new Big(transaction.fromAccount.balance);
+      transaction.fromAccount.balance = transactionFromAccountBalanceValueDecimal.minus(transactionAmountDecimal).toNumber();
       this.state.accounts[transaction.fromAccount.id] = transaction.fromAccount;
     }
 

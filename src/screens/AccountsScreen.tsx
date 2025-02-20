@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useStore } from "../services/zustand";
 import { CURRENCIES } from "../constants/currencies";
+import Big from "big.js";
 
 export const AccountsScreen = () => {
   const { accounts } = useStore();
@@ -8,9 +9,10 @@ export const AccountsScreen = () => {
   const totals: [string, number][] = useMemo(() => {
     const totalsMap = Object.values(accounts).reduce((result, account) => {
       if (result[account.currency]) {
-        result[account.currency] += account.balance;
+        const accumulatorValueDecimal = new Big(result[account.currency]);
+        result[account.currency] = accumulatorValueDecimal.plus(new Big(account.balance)).toNumber();
       } else {
-        result[account.currency] = account.balance;
+        result[account.currency] = new Big(account.balance).toNumber();
       }
       return result;
     }, {} as Record<string, number>);
