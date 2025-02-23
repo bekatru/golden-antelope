@@ -2,7 +2,6 @@
   "hosting": [
     {
       "target": "prod",
-      "site": "golden-antelope",
       "public": "dist",
       "ignore": [
         "firebase.json",
@@ -18,7 +17,6 @@
     },
     {
       "target": "stage",
-      "site": "golden-antelope-stage",
       "public": "dist",
       "ignore": [
         "firebase.json",
