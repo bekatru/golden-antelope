@@ -1,5 +1,26 @@
 {
   "projects": {
     "default": "golden-antelope"
-  }
+  },
+  "targets": {
+    "golden-antelope": {
+      "hosting": {
+        "prod": [
+          "golden-antelope"
+        ],
+        "stage": [
+          "golden-antelope-stage"
+        ]
+      },
+      "database": {
+        "prod": [
+          "golden-antelope-default-rtdb"
+        ],
+        "stage": [
+          "golden-antelope-stage"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

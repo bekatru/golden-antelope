@@ -5,7 +5,7 @@ name: Deploy to Firebase Hosting on merge
 on:
   push:
     branches:
-      - master
+      - stage
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -18,4 +18,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GOLDEN_ANTELOPE }}
           channelId: live
           projectId: golden-antelope
-          target: prod
+          target: stage
