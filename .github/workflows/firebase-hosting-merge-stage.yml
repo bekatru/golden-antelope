@@ -23,6 +23,8 @@ jobs:
       - name: Debug Environment Variables
         run: cat .env
       - run: npm ci && npm run build
+      - name: Check built files for env variables
+        run: grep -r "golden-antelope" dist/ || echo "Warning! Environment variables might not be included in the build!"
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
