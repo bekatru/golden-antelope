@@ -39,10 +39,6 @@ export const CreateTransactionScreen = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!amount) {
-      return;
-    }
-
     const newTransaction: TransactionDto = {
       type,
       amount: Number(amount),
@@ -95,23 +91,20 @@ export const CreateTransactionScreen = () => {
     >
       <TransactionTypeSelect value={type} onChange={handleTypeChange} />
       <AmountInput value={amount} onChange={setAmount} />
-      <AccountSelect
+      {type != 'income' && <AccountSelect
         value={fromAccountId}
         onChange={setFromAccountId}
-        required={type != "income"}
-        disabled={type == "income"}
+        required={true}
         placeholderPrefix="from"
         disabledOptionIds={[toAccountId]}
-      />
-      <AccountSelect
+      />}
+      {type != 'expense' && <AccountSelect
         value={toAccountId}
         onChange={setToAccountId}
-        required={type != "expense"}
-        disabled={type == "expense"}
+        required={true}
         placeholderPrefix="to"
         disabledOptionIds={[fromAccountId]}
-      />
-
+      />}
       {type == "transfer" &&
         fromAccountId &&
         toAccountId &&

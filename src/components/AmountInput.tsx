@@ -14,7 +14,7 @@ export const AmountInput = (props: AmountInputProps) => {
       autoComplete="off"
       placeholder="amount"
       value={props.value}
-      onChange={(e) => props.onChange?.(e.target.value)}
+      onChange={(e) => props.onChange?.(e.target.value.replace(',', '.'))}
       className="w-full py-2 text-right focus:outline-0"
       required
     />

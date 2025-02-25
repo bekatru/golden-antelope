@@ -48,8 +48,9 @@ export const AccountsScreen = () => {
       <div className="border-t flex justify-between py-3">
         <div>totals</div>
         <div className="flex space-x-4">
-          {totals.length ? totals.map(([currency, balance]) => (
+          {totals.length ? totals.map(([currency, balance], index) => (
             <div
+              key={index}
               className={
                 balance > 0
                   ? "text-green-500"
