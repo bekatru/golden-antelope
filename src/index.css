@@ -2,7 +2,7 @@
 
 * {
   -webkit-tap-highlight-color: transparent;
-  /* overscroll-behavior: none; */
+  overscroll-behavior: none;
 }
 
 body {
@@ -47,4 +47,14 @@ select {
   direction: rtl;
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+#scroller * {
+  overflow-anchor: none;
+  scrollbar-width: 1px;
+}
+
+#anchor {
+  overflow-anchor: auto;
+  height: 1px;
 }
