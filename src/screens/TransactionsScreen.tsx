@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 import { useStore } from "../services/zustand";
 import { NavLink } from "react-router";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { CURRENCIES } from "../constants/currencies";
 
 export const TransactionsScreen = () => {
@@ -18,12 +18,20 @@ export const TransactionsScreen = () => {
     [transactions]
   );
 
+  useEffect(() => {
+    const anchor = document.getElementById("anchor");
+
+    if (anchor) {
+      anchor.scrollIntoView();
+    }
+  }, [])
+
   return (
     <div
       id="transactions-screen-container"
-      className="h-full flex flex-col justify-end px-4"
+      className="h-full flex flex-col justify-end"
     >
-      <div className="max-h-full overflow-scroll">
+      <div className="scroller max-h-full overflow-scroll px-4">
         {memoizedTrx.map(({ id, createdAt, amount, type, ...transaction }) => (
           <NavLink key={id} to={`/view/transaction/${id}`}>
             <div className="flex flex-row justify-between py-3 text-xl font-light">
@@ -47,6 +55,7 @@ export const TransactionsScreen = () => {
             </div>
           </NavLink>
         ))}
+        <div id="anchor"/>
       </div>
       <NavLink to={"/create/transaction"}>
         <div className="py-3 border-t flex justify-center">
