@@ -87,8 +87,10 @@ export const CreateTransactionScreen = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="px-4 h-full flex flex-col font-light text-2xl"
+      className="h-full flex flex-col font-light text-2xl"
     >
+      <div className="px-4">
+
       <TransactionTypeSelect value={type} onChange={handleTypeChange} />
       <AmountInput value={amount} onChange={setAmount} />
       {type != 'income' && <AccountSelect
@@ -118,12 +120,13 @@ export const CreateTransactionScreen = () => {
 
       <CategorySelect value={categoryId} onChange={setCategoryId} />
       <NoteInput value={note} onChange={setNote} />
+      </div>
 
-      <div className="mt-auto w-full border-t flex justify-evenly">
+      <div className="mt-auto w-full border-t border-gray-400 flex justify-evenly">
         <BackButton />
         <button
           type="submit"
-          className="flex-1 py-4 box-content flex justify-center"
+          className="flex-1 py-4 box-content flex justify-center text-gray-400 active:text-white"
         >
           <Save size={28} strokeWidth={1} />
         </button>

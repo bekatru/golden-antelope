@@ -8,7 +8,7 @@ export const BackButton = () => {
       onClick={() => navigate(-1)}
       size={28}
       strokeWidth={1}
-      className="flex-1 py-4 box-content"
+      className="flex-1 py-4 box-content text-gray-400 active:text-white"
     />
   );
 };

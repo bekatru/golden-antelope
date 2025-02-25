@@ -1,4 +1,3 @@
-import { Plus } from "lucide-react";
 import { useStore } from "../services/zustand";
 import { NavLink } from "react-router";
 import { useEffect, useMemo } from "react";
@@ -57,11 +56,6 @@ export const TransactionsScreen = () => {
         ))}
         <div id="anchor"/>
       </div>
-      <NavLink to={"/create/transaction"}>
-        <div className="py-3 border-t flex justify-center">
-          <Plus size={28} strokeWidth={1} />
-        </div>
-      </NavLink>
     </div>
   );
 };

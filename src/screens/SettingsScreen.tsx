@@ -32,7 +32,7 @@ export const SettingsScreen = () => {
 
       <div
         id="settings-screen-header"
-        className="flex justify-between items-center border-t py-3"
+        className="flex justify-between items-center py-3"
         onClick={auth.user ? handleLogoutPress : auth.login}
       >
         <div className="font-light text-xl">
