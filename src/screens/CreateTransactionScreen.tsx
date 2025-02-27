@@ -89,37 +89,47 @@ export const CreateTransactionScreen = () => {
       onSubmit={handleSubmit}
       className="h-full flex flex-col font-light text-2xl"
     >
-      <div className="px-4">
+      <div className="p-4 flex flex-col justify-between h-full">
+        <div>
+          <AmountInput value={amount} onChange={setAmount} />
+          {type == "transfer" &&
+            fromAccountId &&
+            toAccountId &&
+            accounts[fromAccountId]?.currency !=
+              accounts[toAccountId]?.currency && (
+              <ConversionRateInput
+                value={conversionRate}
+                onChange={setConversionRate}
+              />
+            )}
+          <NoteInput value={note} onChange={setNote} />
+        </div>
 
-      <TransactionTypeSelect value={type} onChange={handleTypeChange} />
-      <AmountInput value={amount} onChange={setAmount} />
-      {type != 'income' && <AccountSelect
-        value={fromAccountId}
-        onChange={setFromAccountId}
-        required={true}
-        placeholderPrefix="from"
-        disabledOptionIds={[toAccountId]}
-      />}
-      {type != 'expense' && <AccountSelect
-        value={toAccountId}
-        onChange={setToAccountId}
-        required={true}
-        placeholderPrefix="to"
-        disabledOptionIds={[fromAccountId]}
-      />}
-      {type == "transfer" &&
-        fromAccountId &&
-        toAccountId &&
-        accounts[fromAccountId]?.currency !=
-          accounts[toAccountId]?.currency && (
-          <ConversionRateInput
-            value={conversionRate}
-            onChange={setConversionRate}
-          />
-        )}
+        <div>
+          <CategorySelect value={categoryId} onChange={setCategoryId} />
 
-      <CategorySelect value={categoryId} onChange={setCategoryId} />
-      <NoteInput value={note} onChange={setNote} />
+          {type != "expense" && (
+            <AccountSelect
+              value={toAccountId}
+              onChange={setToAccountId}
+              required={true}
+              placeholderPrefix="to"
+              disabledOptionIds={[fromAccountId]}
+            />
+          )}
+
+          {type != "income" && (
+            <AccountSelect
+              value={fromAccountId}
+              onChange={setFromAccountId}
+              required={true}
+              placeholderPrefix="from"
+              disabledOptionIds={[toAccountId]}
+            />
+          )}
+
+          <TransactionTypeSelect value={type} onChange={handleTypeChange} />
+        </div>
       </div>
 
       <div className="mt-auto w-full border-t border-gray-400 flex justify-evenly">
