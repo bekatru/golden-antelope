@@ -89,8 +89,8 @@ export const CreateTransactionScreen = () => {
       onSubmit={handleSubmit}
       className="h-full flex flex-col font-light text-2xl"
     >
-      <div className="p-4 flex flex-col justify-between h-full">
-        <div>
+      <div className="p-4 flex flex-col justify-end h-full">
+        {/* <div> */}
           <AmountInput value={amount} onChange={setAmount} />
           {type == "transfer" &&
             fromAccountId &&
@@ -103,9 +103,9 @@ export const CreateTransactionScreen = () => {
               />
             )}
           <NoteInput value={note} onChange={setNote} />
-        </div>
+        {/* </div> */}
 
-        <div>
+        {/* <div> */}
           <CategorySelect value={categoryId} onChange={setCategoryId} />
 
           {type != "expense" && (
@@ -129,7 +129,7 @@ export const CreateTransactionScreen = () => {
           )}
 
           <TransactionTypeSelect value={type} onChange={handleTypeChange} />
-        </div>
+        {/* </div> */}
       </div>
 
       <div className="mt-auto w-full border-t border-gray-400 flex justify-evenly">
